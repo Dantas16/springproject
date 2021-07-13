@@ -1,5 +1,8 @@
 package com.training.springbootbuyitem.entity.response;
 
+import lombok.Builder;
+
+@Builder
 public class ErrorMessage {
 
 	public ErrorMessage(){}
