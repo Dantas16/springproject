@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserRequestDto {
+public class CreateBuyerRequestDto {
 
     @NotEmpty
     private String name;

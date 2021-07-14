@@ -7,6 +7,7 @@ import com.training.springbootbuyitem.enums.EnumItemState;
 import com.training.springbootbuyitem.error.EntityNotFoundException;
 import com.training.springbootbuyitem.repository.ItemRepository;
 import com.training.springbootbuyitem.utils.properties.ItemStorageProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,7 +16,9 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+@Slf4j
 @Service
 public class ItemService implements IItemService {
 
@@ -56,10 +59,25 @@ public class ItemService implements IItemService {
 		itemRepository.delete(get(id));
 	}
 
+	private boolean isValidState(String state) {
+		try {
+			EnumItemState.valueOf(state.toUpperCase(Locale.ROOT));
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public Item update(Item item) {
 		Item persistedItem = get(item.getItemUid());
-		if (!StringUtils.hasText(item.getName())) {
+
+		// erro?
+//		if (!StringUtils.hasText(item.getName())) {
+//			persistedItem.setName(item.getName());
+//		}
+
+		if (StringUtils.hasText(item.getName())) {
 			persistedItem.setName(item.getName());
 		}
 		if (!StringUtils.isEmpty(item.getDescription())) {
@@ -74,6 +92,11 @@ public class ItemService implements IItemService {
 		if (item.getPriceTag() != null && item.getPriceTag().longValue() >= 0.0) {
 			persistedItem.setPriceTag(item.getPriceTag());
 		}
+		if (isValidState(item.getState())) {
+			persistedItem.setState(item.getState().toUpperCase(Locale.ROOT));
+		}
+		log.info(persistedItem.toString());
+		itemRepository.save(persistedItem);
 		return persistedItem;
 	}
 

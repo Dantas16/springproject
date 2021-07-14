@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserResponseDto {
+public class CreateBuyerResponseDto {
     private Long userUid;
 }

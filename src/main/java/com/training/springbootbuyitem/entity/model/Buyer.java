@@ -16,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class Buyer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userUid;

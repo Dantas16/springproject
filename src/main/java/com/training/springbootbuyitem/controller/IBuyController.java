@@ -1,12 +1,11 @@
 package com.training.springbootbuyitem.controller;
 
 import com.training.springbootbuyitem.entity.model.Item;
+import com.training.springbootbuyitem.entity.request.CreateBuyerRequestDto;
 import com.training.springbootbuyitem.entity.request.CreateItemRequestDto;
 import com.training.springbootbuyitem.entity.request.DispatchItemRequestDto;
 import com.training.springbootbuyitem.entity.request.RestockItemRequestDto;
-import com.training.springbootbuyitem.entity.response.CreateItemResponseDto;
-import com.training.springbootbuyitem.entity.response.GetItemResponseDto;
-import com.training.springbootbuyitem.entity.response.UpdateItemResponseDto;
+import com.training.springbootbuyitem.entity.response.*;
 import com.training.springbootbuyitem.utils.annotation.ServiceOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,4 +60,16 @@ public interface IBuyController {
 	@ServiceOperation("restockItem")
 	ResponseEntity<HttpStatus> restockItem(@PathVariable("id") Long id,
                                            @RequestBody RestockItemRequestDto request);
+
+	@PostMapping
+	@ServiceOperation("createBuyer")
+	ResponseEntity<CreateBuyerResponseDto> createBuyer(@RequestBody @Valid CreateBuyerRequestDto request);
+
+	@GetMapping("buyer/{id}")
+	@ServiceOperation("getBuyer")
+	ResponseEntity<GetBuyerResponseDto> getBuyer(@PathVariable("id") Long id);
+
+	@GetMapping("buyer")
+	ResponseEntity<List<GetBuyerResponseDto>> listBuyers();
+
 }
