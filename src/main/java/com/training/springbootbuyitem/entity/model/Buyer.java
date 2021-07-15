@@ -1,5 +1,6 @@
 package com.training.springbootbuyitem.entity.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.Proxy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Proxy(lazy = false)
 @Entity
@@ -21,5 +24,11 @@ public class Buyer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userUid;
     private String name;
+    private String role;
+    private String password;
+
+
+    @OneToMany(mappedBy = "buyer")
+    private Set<Purchase> purchases = new HashSet<>();
 
 }

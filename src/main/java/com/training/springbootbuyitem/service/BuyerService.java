@@ -1,12 +1,14 @@
 package com.training.springbootbuyitem.service;
 
 import com.training.springbootbuyitem.entity.model.Buyer;
+import com.training.springbootbuyitem.entity.model.Item;
 import com.training.springbootbuyitem.enums.EnumEntity;
 import com.training.springbootbuyitem.error.EntityNotFoundException;
 import com.training.springbootbuyitem.repository.BuyerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -34,12 +36,17 @@ public class BuyerService implements  IBuyerService{
 
     @Override
     public void delete(Long id) {
-
+        buyerRepository.delete(get(id));
     }
 
     @Override
     public Buyer update(Buyer entity) {
-        return null;
+        Buyer persistedBuyer = get(entity.getUserUid());
+        if (StringUtils.hasText(entity.getName())) {
+            persistedBuyer.setName(entity.getName());
+        }
+        buyerRepository.save(persistedBuyer);
+        return persistedBuyer;
     }
 
     @Override

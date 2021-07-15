@@ -1,5 +1,6 @@
 package com.training.springbootbuyitem.controller;
 
+import com.training.springbootbuyitem.entity.model.Buyer;
 import com.training.springbootbuyitem.entity.model.Item;
 import com.training.springbootbuyitem.entity.request.CreateBuyerRequestDto;
 import com.training.springbootbuyitem.entity.request.CreateItemRequestDto;
@@ -72,4 +73,11 @@ public interface IBuyController {
 	@GetMapping("buyer")
 	ResponseEntity<List<GetBuyerResponseDto>> listBuyers();
 
+	@PatchMapping("buyer/{id}")
+	@ServiceOperation("updateIBuyer")
+	ResponseEntity<UpdateBuyerResponseDto> updateBuyer(@PathVariable("id") Long id, @RequestBody Buyer buyer);
+
+	@DeleteMapping("/{id}")
+	@ServiceOperation("deleteBuyer")
+	ResponseEntity<HttpStatus> deleteBuyer(@PathVariable("id") Long id);
 }

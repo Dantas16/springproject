@@ -11,4 +11,5 @@ public interface IItemService extends ICrudService<Item> {
 
 	void block(Long id, Integer quantity);
 
+	void blockItemForUser(Long id, Long userId, Integer quantity);
 }

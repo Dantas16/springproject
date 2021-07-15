@@ -1,13 +1,16 @@
 package com.training.springbootbuyitem.service;
 
+import com.training.springbootbuyitem.constant.ItemStorageConstant;
+import com.training.springbootbuyitem.entity.model.BlockedItem;
 import com.training.springbootbuyitem.entity.model.Item;
-import com.training.springbootbuyitem.entity.request.NotificationRequest;
 import com.training.springbootbuyitem.enums.EnumEntity;
 import com.training.springbootbuyitem.enums.EnumItemState;
 import com.training.springbootbuyitem.error.EntityNotFoundException;
+import com.training.springbootbuyitem.repository.BlockedItemRepository;
 import com.training.springbootbuyitem.repository.ItemRepository;
 import com.training.springbootbuyitem.utils.properties.ItemStorageProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -26,6 +29,9 @@ public class ItemService implements IItemService {
 	private ItemRepository itemRepository;
 
 	@Autowired
+	private BlockedItemRepository blockedItemRepository;
+
+	@Autowired
 	private ItemStorageProperties itemStorageProperties;
 
 	/**
@@ -36,6 +42,9 @@ public class ItemService implements IItemService {
 	 */
 	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private IBuyerService buyerService;
 
 	@Override
 	public List<Item> list() {
@@ -106,10 +115,11 @@ public class ItemService implements IItemService {
 		return itemRepository.save(item);
 	}
 
-
 	@Override
 	public void restock(Long id, Integer quantity) {
-		// TODO
+		Item item = get(id);
+		item.setStock(item.getStock().add(BigInteger.valueOf(quantity)));
+		itemRepository.save(item);
 	}
 
 	//TODO create the dispatch method that use "quantity"  items from item stock for the item represented by id
@@ -122,6 +132,13 @@ public class ItemService implements IItemService {
 
 	@Override
 	public void block(Long id, Integer quantity) {
+		Item item = get(id);
+		item.setStock(item.getStock().subtract(BigInteger.valueOf(quantity)));
+		save(item);
+	}
+
+	@Override
+	public void blockItemForUser(Long id, Long userId, Integer quantity) {
 		Item item = get(id);
 		item.setStock(item.getStock().subtract(BigInteger.valueOf(quantity)));
 		save(item);

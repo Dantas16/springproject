@@ -1,5 +1,7 @@
 package com.training.springbootbuyitem.controller;
 
+import com.training.springbootbuyitem.constant.BuyItemConstant;
+import com.training.springbootbuyitem.constant.ItemStorageConstant;
 import com.training.springbootbuyitem.entity.model.Buyer;
 import com.training.springbootbuyitem.entity.model.Item;
 import com.training.springbootbuyitem.entity.request.CreateBuyerRequestDto;
@@ -7,11 +9,13 @@ import com.training.springbootbuyitem.entity.request.CreateItemRequestDto;
 import com.training.springbootbuyitem.entity.request.DispatchItemRequestDto;
 import com.training.springbootbuyitem.entity.request.RestockItemRequestDto;
 import com.training.springbootbuyitem.entity.response.*;
+import com.training.springbootbuyitem.enums.EnumOperation;
 import com.training.springbootbuyitem.service.BuyerService;
 import com.training.springbootbuyitem.service.ItemService;
 import com.training.springbootbuyitem.utils.annotation.ServiceOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RefreshScope
@@ -46,11 +51,9 @@ public class BuyController implements IBuyController {
     private ModelMapper mapper;
 
     @Override
-//    @PostMapping
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ServiceOperation("createItem")
     public ResponseEntity<CreateItemResponseDto> createItem(@RequestBody @Valid CreateItemRequestDto request) {
-        log.info("Post mapping create Item");
         return new ResponseEntity<>(mapper.map(itemService.save(mapper.map(request, Item.class)), CreateItemResponseDto.class), HttpStatus.CREATED);
     }
 
@@ -92,7 +95,6 @@ public class BuyController implements IBuyController {
                                                    @RequestBody DispatchItemRequestDto request) {
         itemService.dispatch(id, request.getQuantity());
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     @Override
@@ -110,9 +112,11 @@ public class BuyController implements IBuyController {
     @RequestMapping(value = "/{id}/{user}/block", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<HttpStatus> blockItemForUser(@PathVariable("id") Long id, @PathVariable("user") Long userId,
                                                        @RequestBody DispatchItemRequestDto request) {
-        itemService.block(id, request.getQuantity());
+        MDC.put(ItemStorageConstant.OPERATION, EnumOperation.BlockItem.name());
+        MDC.put(ItemStorageConstant.TRACE_ID, UUID.randomUUID().toString() + " BLOCKED_ITEM");
+        itemService.blockItemForUser(id, userId, request.getQuantity());
+        MDC.clear();
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     @Override
@@ -129,7 +133,7 @@ public class BuyController implements IBuyController {
     @Override
     @RequestMapping(value = "buyer", method = RequestMethod.POST)
     @ServiceOperation("createBuyer")
-    public ResponseEntity<CreateBuyerResponseDto> createBuyer( @RequestBody @Valid CreateBuyerRequestDto request) {
+    public ResponseEntity<CreateBuyerResponseDto> createBuyer(@RequestBody @Valid CreateBuyerRequestDto request) {
         return new ResponseEntity<>(mapper.map(buyerService.save(mapper.map(request, Buyer.class)), CreateBuyerResponseDto.class), HttpStatus.CREATED);
     }
 
@@ -148,4 +152,19 @@ public class BuyController implements IBuyController {
                 Collectors.toList()), HttpStatus.OK);
     }
 
+    @Override
+    @PatchMapping("buyer/{id}")
+    @ServiceOperation("updateIBuyer")
+    public ResponseEntity<UpdateBuyerResponseDto> updateBuyer(@PathVariable("id") Long id, @RequestBody Buyer buyer) {
+        buyer.setUserUid(id);
+        return new ResponseEntity<>(mapper.map(buyerService.update(buyer), UpdateBuyerResponseDto.class), HttpStatus.OK);
+    }
+
+    @Override
+    @DeleteMapping("buyer/{id}")
+    @ServiceOperation("deleteBuyer")
+    public ResponseEntity<HttpStatus> deleteBuyer(@PathVariable("id") Long id) {
+        buyerService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
