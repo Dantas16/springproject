@@ -1,5 +1,5 @@
 package com.training.springbootbuyitem.entity.request;
 
-public class UpdateBuyerRequestDto {
+public class UpdateUserRequestDto {
     private String name;
 }

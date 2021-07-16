@@ -1,6 +1,5 @@
 package com.training.springbootbuyitem.entity.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,21 +13,28 @@ import java.util.Set;
 
 @Proxy(lazy = false)
 @Entity
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Buyer {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user", unique = true, nullable = false)
     private Long userUid;
+    @Column(unique = true)
     private String name;
     private String role;
+    private String username;
     private String password;
 
-
-    @OneToMany(mappedBy = "buyer")
+    @OneToMany(mappedBy = "user")
     private Set<Purchase> purchases = new HashSet<>();
+
+    public void setPurchase(Purchase purchase) {
+        purchases.add(purchase);
+    }
 
 }

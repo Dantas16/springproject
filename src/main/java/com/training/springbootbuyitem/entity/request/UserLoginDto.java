@@ -1,4 +1,4 @@
-package com.training.springbootbuyitem.entity.response;
+package com.training.springbootbuyitem.entity.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateBuyerResponseDto {
-    private Long userUid;
+public class UserLoginDto {
+    private String username;
+    private String password;
 }

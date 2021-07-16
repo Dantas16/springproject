@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetBuyerResponseDto extends CreateBuyerResponseDto{
+public class GetUserResponseDto extends CreateUserResponseDto {
     String name;
 }

@@ -1,9 +1,12 @@
 package com.training.springbootbuyitem.repository;
 
-import com.training.springbootbuyitem.entity.model.Buyer;
+import com.training.springbootbuyitem.entity.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
-public interface BuyerRepository extends JpaRepository<Buyer, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
+
 }

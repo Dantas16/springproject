@@ -1,18 +1,17 @@
 package com.training.springbootbuyitem.entity.request;
 
+import com.training.springbootbuyitem.entity.model.Item;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateBuyerRequestDto {
-
-    @NotEmpty
-    private String name;
+public class UpdateItemsRequestDto {
+    private List<Item> itemList;
 }

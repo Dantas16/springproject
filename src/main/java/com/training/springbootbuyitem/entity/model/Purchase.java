@@ -1,5 +1,6 @@
 package com.training.springbootbuyitem.entity.model;
 
+import com.training.springbootbuyitem.enums.EnumPurchaseState;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -8,9 +9,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
-@Data
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -22,18 +23,26 @@ public class Purchase {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("userUid")
-    @JoinColumn(name = "user_id")
-    private Buyer buyer;
+    @JoinColumn(name = "id_user")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @MapsId("itemUid")
-    @JoinColumn(name = "item_id")
+    @JoinColumn(name = "id_item")
     private Item item;
 
     private Date date;
     private BigInteger quantity;
+    private BigInteger quantityDispatched;
     private BigDecimal price;
     private String state;
 
+    public Purchase(User user, Item item, Date date, BigInteger quantity, BigInteger quantityDispatched, BigDecimal price) {
+        this.user = user;
+        this.item = item;
+        this.date = date;
+        this.quantity = quantity;
+        this.quantityDispatched = quantityDispatched;
+        this.price = price;
+        this.state = EnumPurchaseState.PENDING.name();
+    }
 }

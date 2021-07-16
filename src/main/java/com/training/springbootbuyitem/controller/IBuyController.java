@@ -1,8 +1,6 @@
 package com.training.springbootbuyitem.controller;
 
-import com.training.springbootbuyitem.entity.model.Buyer;
 import com.training.springbootbuyitem.entity.model.Item;
-import com.training.springbootbuyitem.entity.request.CreateBuyerRequestDto;
 import com.training.springbootbuyitem.entity.request.CreateItemRequestDto;
 import com.training.springbootbuyitem.entity.request.DispatchItemRequestDto;
 import com.training.springbootbuyitem.entity.request.RestockItemRequestDto;
@@ -62,22 +60,22 @@ public interface IBuyController {
 	ResponseEntity<HttpStatus> restockItem(@PathVariable("id") Long id,
                                            @RequestBody RestockItemRequestDto request);
 
-	@PostMapping
-	@ServiceOperation("createBuyer")
-	ResponseEntity<CreateBuyerResponseDto> createBuyer(@RequestBody @Valid CreateBuyerRequestDto request);
-
-	@GetMapping("buyer/{id}")
-	@ServiceOperation("getBuyer")
-	ResponseEntity<GetBuyerResponseDto> getBuyer(@PathVariable("id") Long id);
-
-	@GetMapping("buyer")
-	ResponseEntity<List<GetBuyerResponseDto>> listBuyers();
-
-	@PatchMapping("buyer/{id}")
-	@ServiceOperation("updateIBuyer")
-	ResponseEntity<UpdateBuyerResponseDto> updateBuyer(@PathVariable("id") Long id, @RequestBody Buyer buyer);
-
-	@DeleteMapping("/{id}")
-	@ServiceOperation("deleteBuyer")
-	ResponseEntity<HttpStatus> deleteBuyer(@PathVariable("id") Long id);
+//	@PostMapping
+//	@ServiceOperation("createBuyer")
+//	ResponseEntity<CreateBuyerResponseDto> createBuyer(@RequestBody @Valid CreateBuyerRequestDto request);
+//
+//	@GetMapping("buyer/{id}")
+//	@ServiceOperation("getBuyer")
+//	ResponseEntity<GetBuyerResponseDto> getBuyer(@PathVariable("id") Long id);
+//
+//	@GetMapping("buyer")
+//	ResponseEntity<List<GetBuyerResponseDto>> listBuyers();
+//
+//	@PatchMapping("buyer/{id}")
+//	@ServiceOperation("updateIBuyer")
+//	ResponseEntity<UpdateBuyerResponseDto> updateBuyer(@PathVariable("id") Long id, @RequestBody Buyer buyer);
+//
+//	@DeleteMapping("/{id}")
+//	@ServiceOperation("deleteBuyer")
+//	ResponseEntity<HttpStatus> deleteBuyer(@PathVariable("id") Long id);
 }

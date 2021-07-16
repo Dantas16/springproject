@@ -14,6 +14,8 @@ public interface ICrudService<T extends Object> {
 	//TODO ex: 10
 	List<T> get(List<Long> id);
 
+	List<T> update(List<T> id);
+
 	void delete(Long id);
 
 	T update(T entity);

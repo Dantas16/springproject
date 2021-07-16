@@ -26,6 +26,7 @@ public class Item extends Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_item", unique = true, nullable = false)
 	private Long itemUid;
 	@Column(unique = true)
 	private String name;
@@ -35,12 +36,23 @@ public class Item extends Auditable {
 	private BigInteger stock;
 	private BigDecimal priceTag;
 
+//	@ManyToMany
+//	@JoinTable(name = "blocked_access",
+//			joinColumns = @JoinColumn(name = "itemUid"),
+//			inverseJoinColumns = @JoinColumn(name = "userUid"))
+//	@JsonManagedReference
+//	private Set<Buyer> blockedBuyers = new HashSet<Buyer>();
+
 	@OneToMany(mappedBy = "item")
-	private Set<Purchase> purchases;
+	private Set<Purchase> purchases = new HashSet<>();
 
 
 	public Item(String name){
 		this.name = name;
 	}
+
+//	public void addBlockedBuyer(Buyer buyer) {
+//		blockedBuyers.add(buyer);
+//	}
 
 }

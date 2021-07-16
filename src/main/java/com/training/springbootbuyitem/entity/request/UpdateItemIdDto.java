@@ -5,16 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RestockItemRequestDto {
-
-	@NotNull
-	@PositiveOrZero
-	private Integer quantity;
+public class UpdateItemIdDto extends CreateItemRequestDto{
+    private Long id;
 }

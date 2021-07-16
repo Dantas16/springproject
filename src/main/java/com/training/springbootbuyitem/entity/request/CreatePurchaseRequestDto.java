@@ -12,9 +12,10 @@ import javax.validation.constraints.PositiveOrZero;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RestockItemRequestDto {
-
-	@NotNull
-	@PositiveOrZero
-	private Integer quantity;
+public class CreatePurchaseRequestDto {
+    public int userId;
+    public int itemId;
+    @NotNull
+    @PositiveOrZero
+    public int quantity;
 }

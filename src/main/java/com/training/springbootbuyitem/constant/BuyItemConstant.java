@@ -16,6 +16,8 @@ public class BuyItemConstant {
 	/**
 	 * Messages
 	 */
+
+	public static final String NOT_ENOUGH_STOCK_MSG = "Entity {%s} :: UID {%s} not enough in stock for reservation.";
 	public static final String ENTITY_NOT_FOUND_MSG = "Entity {%s} :: UID {%s} not found.";
 	public static final String LOGGING_HANDLER_INBOUND_MSG = "Received HTTP [%s] Request to [%s] at [%s]";
 	public static final String LOGGING_HANDLER_OUTBOUND_MSG = "Responded with Status [%s] at [%s]";

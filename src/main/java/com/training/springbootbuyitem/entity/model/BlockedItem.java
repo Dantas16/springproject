@@ -1,5 +1,7 @@
 package com.training.springbootbuyitem.entity.model;
 
+import com.training.springbootbuyitem.enums.EnumEntity;
+import com.training.springbootbuyitem.error.NotEnoughStockException;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -26,4 +28,11 @@ public class BlockedItem implements Serializable {
 
     @Column(name = "reservedQuantity")
     private BigInteger reservedQuantity;
+
+    public BlockedItem(Long id, Item item) {
+        this.id = id;
+        this.item = item;
+        this.reservedQuantity = BigInteger.valueOf(0);
+    }
+
 }
