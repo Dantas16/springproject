@@ -16,4 +16,5 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
             "order by p.date \n" +
             "limit 1", nativeQuery=true)
     Purchase findOldestToDispatch(@Param("itemId") Long itemId);
+//    Purchase findFirstByItemOderByDateAsc(@Param("itemId") Long itemId);
 }

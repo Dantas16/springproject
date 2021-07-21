@@ -50,7 +50,7 @@ public class BuyController implements IBuyController {
     private ModelMapper mapper;
 
     @Override
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/item", method = RequestMethod.POST)
     @ServiceOperation("createItem")
     public ResponseEntity<CreateItemResponseDto> createItem(@RequestBody @Valid CreateItemRequestDto request) {
         MDC.put(ItemStorageConstant.OPERATION, EnumOperation.CreateItem.name());
@@ -58,14 +58,14 @@ public class BuyController implements IBuyController {
     }
 
     @Override
-    @GetMapping("/{id}")
+    @GetMapping("item/{id}")
     @ServiceOperation("getItem")
     public ResponseEntity<GetItemResponseDto> getItem(@PathVariable("id") Long id) {
         MDC.put(ItemStorageConstant.OPERATION, EnumOperation.GetItem.name());
         return new ResponseEntity<>(mapper.map(itemService.get(id), GetItemResponseDto.class), HttpStatus.OK);
     }
 
-    @PostMapping("/get")
+    @PostMapping("item/get")
     @ServiceOperation("loadItems")
     public ResponseEntity<List<GetItemResponseDto>> getItem(@RequestBody LoadItemsRequestDto idList) {
         MDC.put(ItemStorageConstant.OPERATION, EnumOperation.GetItem.name());
@@ -74,7 +74,7 @@ public class BuyController implements IBuyController {
     }
 
     @Override
-    @PatchMapping("/{id}")
+    @PatchMapping("item/{id}")
     @ServiceOperation("updateItem")
     public ResponseEntity<UpdateItemResponseDto> updateItem(@PathVariable("id") Long id, @RequestBody Item item) {
         MDC.put(ItemStorageConstant.OPERATION, EnumOperation.UpdateItem.name());
@@ -82,7 +82,7 @@ public class BuyController implements IBuyController {
         return new ResponseEntity<>(mapper.map(itemService.update(item), UpdateItemResponseDto.class), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PATCH)
+    @RequestMapping(value = "item/", method = RequestMethod.PATCH)
     @ServiceOperation("updateItems")
     public ResponseEntity<List<UpdateItemResponseDto>> updateItem(@RequestBody UpdateItemsRequestDto itemList) {
         MDC.put(ItemStorageConstant.OPERATION, EnumOperation.UpdateItem.name());
@@ -96,7 +96,7 @@ public class BuyController implements IBuyController {
     }
 
     @Override
-    @DeleteMapping("/{id}")
+    @DeleteMapping("item/{id}")
     @ServiceOperation("deleteItem")
     public ResponseEntity<HttpStatus> deleteItem(@PathVariable("id") Long id) {
         MDC.put(ItemStorageConstant.OPERATION, EnumOperation.DeleteItem.name());
@@ -105,7 +105,7 @@ public class BuyController implements IBuyController {
     }
 
     @Override
-    @GetMapping("/all")
+    @GetMapping("item/all")
     @ServiceOperation("listItems")
     public ResponseEntity<List<GetItemResponseDto>> listItems() {
         MDC.put(ItemStorageConstant.OPERATION, EnumOperation.ListItem.name());
@@ -114,7 +114,7 @@ public class BuyController implements IBuyController {
     }
 
     @Override
-    @PostMapping("/{id}/dispatch")
+    @PostMapping("item/{id}/dispatch")
     @ServiceOperation("dispatchItem")
     public ResponseEntity<HttpStatus> dispatchItem(@PathVariable("id") Long id,
                                                    @RequestBody @Valid DispatchItemRequestDto request) {
@@ -124,7 +124,7 @@ public class BuyController implements IBuyController {
     }
 
     @Override
-    @ServiceOperation("blockItem")
+    @ServiceOperation("item/blockItem")
     @RequestMapping(value = "/{id}/block", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<HttpStatus> blockItem(@PathVariable("id") Long id,
                                                 @RequestBody @Valid DispatchItemRequestDto request) {
@@ -134,7 +134,7 @@ public class BuyController implements IBuyController {
     }
 
     @Override
-    @ServiceOperation("blockItem")
+    @ServiceOperation("item/blockItem")
     @RequestMapping(value = "/{id}/{user}/block", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<HttpStatus> blockItemForUser(@PathVariable("id") Long id, @PathVariable("user") Long userId,
                                                        @RequestBody @Valid DispatchItemRequestDto request) {
@@ -145,7 +145,7 @@ public class BuyController implements IBuyController {
     }
 
     @Override
-    @PostMapping("/{id}/restock")
+    @PostMapping("item/{id}/restock")
     @ServiceOperation("restockItem")
     public ResponseEntity<HttpStatus> restockItem(@PathVariable("id") Long id,
                                                   @RequestBody RestockItemRequestDto request) {
@@ -154,51 +154,6 @@ public class BuyController implements IBuyController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
-    // --User mappings--
-
-//    @Override
-    @RequestMapping(value = "user", method = RequestMethod.POST)
-    @ServiceOperation("createUSer")
-    public ResponseEntity<CreateUserResponseDto> createUser(@RequestBody @Valid CreateUserRequestDto request) {
-        MDC.put(ItemStorageConstant.OPERATION, EnumOperation.CreateItem.name());
-        return new ResponseEntity<>(mapper.map(userService.save(mapper.map(request, User.class)), CreateUserResponseDto.class), HttpStatus.CREATED);
-    }
-
-//    @Override
-    @GetMapping("user/{id}")
-    @ServiceOperation("getUser")
-    public ResponseEntity<GetUserResponseDto> getUser(@PathVariable("id") Long id) {
-        MDC.put(ItemStorageConstant.OPERATION, EnumOperation.GetUSer.name());
-        return new ResponseEntity<>(mapper.map(userService.get(id), GetUserResponseDto.class), HttpStatus.OK);
-    }
-
-//    @Override
-    @GetMapping("user/all")
-    @ServiceOperation("listUsers")
-    public ResponseEntity<List<GetUserResponseDto>> listUsers() {
-        MDC.put(ItemStorageConstant.OPERATION, EnumOperation.ListUser.name());
-        return new ResponseEntity<>(userService.list().stream().map(i -> mapper.map(i, GetUserResponseDto.class)).collect(
-                Collectors.toList()), HttpStatus.OK);
-    }
-
-//    @Override
-    @PatchMapping("user/{id}")
-    @ServiceOperation("updateIUser")
-    public ResponseEntity<UpdateUserResponseDto> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
-        MDC.put(ItemStorageConstant.OPERATION, EnumOperation.UpdateUser.name());
-        user.setUserUid(id);
-        return new ResponseEntity<>(mapper.map(userService.update(user), UpdateUserResponseDto.class), HttpStatus.OK);
-    }
-
-//    @Override
-    @DeleteMapping("user/{id}")
-    @ServiceOperation("deleteUser")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
-        MDC.put(ItemStorageConstant.OPERATION, EnumOperation.DeleteUser.name());
-        userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     @PostMapping("/purchase")
     @ServiceOperation("createPurchase")
@@ -220,5 +175,6 @@ public class BuyController implements IBuyController {
         itemService.cancelPurchase(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 
 }

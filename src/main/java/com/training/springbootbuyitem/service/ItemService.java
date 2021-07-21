@@ -1,9 +1,9 @@
 package com.training.springbootbuyitem.service;
 
 import com.training.springbootbuyitem.entity.model.BlockedItem;
-import com.training.springbootbuyitem.entity.model.User;
 import com.training.springbootbuyitem.entity.model.Item;
 import com.training.springbootbuyitem.entity.model.Purchase;
+import com.training.springbootbuyitem.entity.model.User;
 import com.training.springbootbuyitem.entity.request.CreatePurchaseRequestDto;
 import com.training.springbootbuyitem.entity.response.CreatePurchaseResponseDto;
 import com.training.springbootbuyitem.enums.EnumEntity;
@@ -11,7 +11,6 @@ import com.training.springbootbuyitem.enums.EnumItemState;
 import com.training.springbootbuyitem.enums.EnumPurchaseState;
 import com.training.springbootbuyitem.error.EntityNotFoundException;
 import com.training.springbootbuyitem.error.NotEnoughStockException;
-import com.training.springbootbuyitem.repository.AuthenticationRepository;
 import com.training.springbootbuyitem.repository.BlockedItemRepository;
 import com.training.springbootbuyitem.repository.ItemRepository;
 import com.training.springbootbuyitem.repository.PurchaseRepository;
@@ -72,6 +71,7 @@ public class ItemService implements IItemService {
     // TODO - ex 10
     @Override
     public List<Item> get(List<Long> id) {
+
         return itemRepository.findAllById(id);
     }
 

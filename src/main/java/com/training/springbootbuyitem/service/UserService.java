@@ -1,10 +1,8 @@
 package com.training.springbootbuyitem.service;
 
 import com.training.springbootbuyitem.entity.model.User;
-import com.training.springbootbuyitem.entity.model.UserAuth;
 import com.training.springbootbuyitem.enums.EnumEntity;
 import com.training.springbootbuyitem.error.EntityNotFoundException;
-import com.training.springbootbuyitem.repository.AuthenticationRepository;
 import com.training.springbootbuyitem.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -23,9 +20,6 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    private AuthenticationRepository authenticationRepository;
 
     @Override
     public List<User> list() {
@@ -69,7 +63,7 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAuth userAuth = authenticationRepository.findByUsername(username)
+        User userAuth = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("user not foundwith username: " + username));
 
         return userAuth;
